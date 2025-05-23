@@ -1,4 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { IProject } from './Project'; // Added import
+import { IColumn } from './Column';   // Added import
 
 export interface ITask extends Document {
   title: string;
@@ -6,6 +8,8 @@ export interface ITask extends Document {
   status: 'todo' | 'in-progress' | 'done';
   priority: 'low' | 'medium' | 'high';
   dueDate: Date;
+  project: IProject['_id']; // Added project field
+  column: IColumn['_id'];   // Added column field
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,7 +46,17 @@ const TaskSchema: Schema = new Schema({
       },
       message: 'Due date must be in the future'
     }
-  }
+  },
+  project: {
+    type: Schema.Types.ObjectId,
+    ref: 'Project',
+    required: true,
+  },
+  column: {
+    type: Schema.Types.ObjectId,
+    ref: 'Column',
+    required: true,
+  },
 }, {
   timestamps: true
 });
