@@ -1,19 +1,21 @@
-import express, { Router, RequestHandler } from 'express';
+import { Router } from 'express';
 import {
-  getTasks,
-  getTask,
   createTask,
+  getTasksForColumn,
+  getTaskInColumn,
   updateTask,
   deleteTask
 } from '../controllers/taskController';
 
-const router: Router = express.Router();
+// mergeParams: true allows access to :projectId and :columnId from parent routers
+const router = Router({ mergeParams: true });
 
-// Task routes
-router.get('/', getTasks as RequestHandler);
-router.get('/:id', getTask as RequestHandler);
-router.post('/', createTask as RequestHandler);
-router.put('/:id', updateTask as RequestHandler);
-router.delete('/:id', deleteTask as RequestHandler);
+// Routes are relative to /api/projects/:projectId/columns/:columnId/tasks
 
-export default router; 
+router.post('/', createTask);
+router.get('/', getTasksForColumn);
+router.get('/:taskId', getTaskInColumn); // :taskId will be req.params.taskId
+router.put('/:taskId', updateTask);
+router.delete('/:taskId', deleteTask);
+
+export default router;

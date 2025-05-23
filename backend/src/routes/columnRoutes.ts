@@ -5,16 +5,18 @@ import {
   updateColumn,
   deleteColumn
 } from '../controllers/columnController';
-// import { protect } from '../middleware/authMiddleware'; // Not needed here as parent router (projectRoutes) will apply it
+import taskRoutes from './taskRoutes'; // Import task routes
 
-const router = Router({ mergeParams: true }); // Essential for accessing :projectId
+const router = Router({ mergeParams: true }); // For :projectId
 
-// Note: 'protect' middleware is assumed to be applied in the parent router (projectRoutes.ts)
-// If it weren't, you'd uncomment and use: router.use(protect);
-
+// Column specific routes (already defined)
 router.post('/', createColumn);
 router.get('/', getColumnsForProject);
 router.put('/:columnId', updateColumn);
 router.delete('/:columnId', deleteColumn);
+
+// Nested Task routes
+// Path will be /api/projects/:projectId/columns/:columnId/tasks
+router.use('/:columnId/tasks', taskRoutes);
 
 export default router;

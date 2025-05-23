@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import taskRoutes from './routes/taskRoutes';
+// import taskRoutes from './routes/taskRoutes'; // Old import - to be removed
 import authRoutes from './routes/authRoutes';
-import projectRoutes from './routes/projectRoutes'; // Add this import
+import projectRoutes from './routes/projectRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -25,9 +25,9 @@ mongoose.connect(MONGODB_URI)
   });
 
 // Routes
-app.use('/api/tasks', taskRoutes);
+// app.use('/api/tasks', taskRoutes); // This line is removed
 app.use('/api/auth', authRoutes);
-app.use('/api/projects', projectRoutes); // Add this line to use project routes
+app.use('/api/projects', projectRoutes); // Project routes now handle nested column and task routes
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Welcome to Task Tracker API' });
